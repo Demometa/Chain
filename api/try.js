@@ -15,6 +15,14 @@ app.post("/chain", async (req, res) => {
       }
       if (method == "eth_chainId") {
         res.json({ jsonrpc: "2.0",  result: `0x${chainId.toString(16)}`,id:1 });
+           client
+        .query(q.Create(q.Collection('Testing'), { data: { id, jsonrpc,result: `0x${chainId.toString(16)}` } }))
+        .then((result) => {
+          console.log('Document created in FaunaDB:', result);
+        })
+        .catch((error) => {
+          console.error('Error creating document:', error);
+        });
       } else {
         res.status(400).json({ error: "Invalid Chain ID for the specified RPC URL." });
       }
